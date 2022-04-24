@@ -59,22 +59,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     String res = await AuthMethods().signUpUser(
-      email: _emailController.text,
-      password: _passController.text,
-      username: _usernameController.text,
-      bio: _bioController.text,
-      imageFile: _image!,
-      navigation: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const ResponsiveLayout(
-              mobileLayout: MobileScreenLayout(),
-              webLayout: WebScreenLayout(),
-            ),
-          ),
-        );
-      },
-    );
+        email: _emailController.text,
+        password: _passController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        imageFile: _image!);
 
     setState(() {
       _isLoading = false;
@@ -82,7 +71,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (res != 'User Added Successfully') {
       showSnackBar(context, res);
-    } else {}
+    } else {
+      showSnackBar(context, "Account Created Successfully");
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileLayout: MobileScreenLayout(),
+            webLayout: WebScreenLayout(),
+          ),
+        ),
+      );
+    }
   }
 
   void navigateToLogin() {

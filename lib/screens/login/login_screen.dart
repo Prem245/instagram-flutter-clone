@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_flutter_clone/resources/auth_methods.dart';
+import 'package:instagram_flutter_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_flutter_clone/responsive/responsive_layout.dart';
+import 'package:instagram_flutter_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_flutter_clone/screens/sign_up/sign_up_screen.dart';
 import 'package:instagram_flutter_clone/utils/colors.dart';
 import 'package:instagram_flutter_clone/utils/utils.dart';
@@ -44,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     String res = await AuthMethods().loginUser(
       email: _emailController.text,
-      password: _passController.text,
-      navigation: () {},
+      password: _passController.text
     );
 
     setState(() {
@@ -55,6 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res == "Success") {
       showSnackBar(
           context, "Logged in as ${_auth.currentUser!.email.toString()}");
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileLayout: MobileScreenLayout(),
+            webLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     } else {
       showSnackBar(context, res);
     }
@@ -149,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const Text(
                     "Don't have an account, Click here to",
-                    style: TextStyle(color: Colors.white70),
+                    style: TextStyle(color: primaryColor70),
                   ),
                   TextButton(
                     onPressed: navigateToSignUp,

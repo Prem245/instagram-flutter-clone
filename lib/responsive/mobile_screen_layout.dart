@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_flutter_clone/models/user_model.dart' as user_model;
 import 'package:instagram_flutter_clone/utils/colors.dart';
+import 'package:provider/provider.dart';
+import '../provider/user_provider.dart';
+import '../resources/auth_methods.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -11,11 +14,13 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   void logOutUser() async {
-    await FirebaseAuth.instance.signOut();
+    await AuthMethods().logOutUser();
   }
 
   @override
   Widget build(BuildContext context) {
+    user_model.User? user = Provider.of<UserProvider>(context).getUser;
+
     return Scaffold(
       backgroundColor: mobileBgColor,
       appBar: AppBar(
@@ -25,7 +30,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Home"),
+            Text("Username : ${user!.username}"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: logOutUser,
